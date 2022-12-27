@@ -1,6 +1,6 @@
 {
   "name": "hassan-currency-converter",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "The TypeScript console app is used to convert currencies: the users enter a certain amount of money in one currency and set the currency they want to check the monetary value of.",
   "main": "index.js",
   "type": "module",
