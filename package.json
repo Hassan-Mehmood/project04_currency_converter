@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^16.0.3",
     "inquirer": "^9.1.4"
   },
   "devDependencies": {

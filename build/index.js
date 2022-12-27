@@ -1,17 +1,17 @@
 #! /usr/bin/env node
 import inquirer from "inquirer";
-// These rates are with respect to doller
+import * as dotenv from "dotenv";
+dotenv.config();
 const CURRENCIES = [
-    { name: "United States Doller (USD)", rate: 1 },
-    { name: "Pakistani Rupee (PKR)", rate: 226.33 },
-    { name: "Indian Rupee (INR)", rate: 82.83 },
-    { name: "Great British Pound (GBP)", rate: 0.83 },
-    { name: "Japanese Yen (JPY)", rate: 132.66 },
-    { name: "Chinese Yen (CNY)", rate: 6.99 },
-    { name: "Euro (EUR)", rate: 0.942 },
-    { name: "United Arab Emirates Dirham (AED)", rate: 3.67 },
+    { name: "United States Doller (USD)", code: "USD" },
+    { name: "Pakistani Rupee (PKR)", code: "PKR" },
+    { name: "Indian Rupee (INR)", code: "INR" },
+    { name: "Great British Pound (GBP)", code: "GBP" },
+    { name: "Japanese Yen (JPY)", code: "JPY" },
+    { name: "Chinese Yen (CNY)", code: "CNY" },
+    { name: "Euro (EUR)", code: "EUR" },
+    { name: "United Arab Emirates Dirham (AED)", code: "AED" },
 ];
-//https://api.exchangerate-api.com/v4/latest/USD
 async function main() {
     const { fromCurrency, amount, toCurrency } = await inquirer.prompt([
         {
@@ -25,7 +25,7 @@ async function main() {
             name: "amount",
             type: "input",
             validate: (value) => {
-                if (isNaN(value) || "") {
+                if (isNaN(value) || value.length === 0) {
                     return "Please enter a number";
                 }
                 return true;
@@ -40,18 +40,23 @@ async function main() {
     ]);
     convertCurrency(fromCurrency, amount, toCurrency);
 }
-function convertCurrency(fromCurrency, amount, toCurrency) {
-    let fromCurrencyRate = 0;
-    let toCurrencyRate = 0;
+async function convertCurrency(fromCurrency, amount, toCurrency) {
+    let fromCurrencyCode = "";
+    let toCurrencyCode = "";
     for (let i = 0; i < CURRENCIES.length; i++) {
-        if (CURRENCIES[i].name === fromCurrency) {
-            fromCurrencyRate = CURRENCIES[i].rate;
-        }
-        if (CURRENCIES[i].name === toCurrency) {
-            toCurrencyRate = CURRENCIES[i].rate;
-        }
+        if (CURRENCIES[i].name === fromCurrency)
+            fromCurrencyCode = CURRENCIES[i].code;
+        if (CURRENCIES[i].name === toCurrency)
+            toCurrencyCode = CURRENCIES[i].code;
     }
-    const convertedAmount = amount * fromCurrencyRate;
-    console.log(convertedAmount);
+    try {
+        const apiResponse = fetch(`${process.env.API_KEY}/${fromCurrencyCode}/${toCurrencyCode}`);
+        const data = await (await apiResponse).json();
+        const exChangeCurrency = (data.conversion_rate * amount).toFixed(2);
+        console.log(`${amount} ${fromCurrencyCode} = ${exChangeCurrency} ${toCurrencyCode}`);
+    }
+    catch (error) {
+        console.log(error);
+    }
 }
 main();
