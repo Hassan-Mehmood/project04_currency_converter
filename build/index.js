@@ -1,62 +1,96 @@
-#! /usr/bin/env node
 import inquirer from 'inquirer';
-import * as dotenv from 'dotenv';
-dotenv.config();
-const CURRENCIES = [
-    { name: 'United States Doller (USD)', code: 'USD', rate: 1 },
-    { name: 'Pakistani Rupee (PKR)', code: 'PKR', rate: 226.56 },
-    { name: 'Indian Rupee (INR)', code: 'INR', rate: 82.74 },
-    { name: 'Great British Pound (GBP)', code: 'GBP', rate: 0.8285 },
-    { name: 'Japanese Yen (JPY)', code: 'JPY', rate: 131.56 },
-    { name: 'Chinese Yen (CNY)', code: 'CNY', rate: 6.9181 },
-    { name: 'Euro (EUR)', code: 'EUR', rate: 0.9358 },
-    { name: 'United Arab Emirates Dirham (AED)', code: 'AED', rate: 3.6725 },
+const USDConvert = [1, 0.83, 225, 7.2];
+const PoundConvert = [1.21, 1, 272.3, 8.7];
+const PKRConvert = [0.004, 0.003, 1, 0.032];
+const YUANConvert = [0.14, 0.12, 31.22, 1];
+let questions = [
+    {
+        type: 'list',
+        name: 'convertee',
+        choices: ['U.S Dollars', 'British Pounds', 'Pakistani Ruppees', 'Chinese Yuan'],
+        message: 'Choose the Currency you want to convert: ',
+    },
+    {
+        type: 'list',
+        name: 'converted',
+        choices: ['U.S Dollars', 'British Pounds', 'Pakistani Ruppees', 'Chinese Yuan'],
+        message: 'Choose the Currency, you want the previous currecy convert to',
+    },
+    {
+        type: 'input',
+        name: 'amount',
+        message: 'Enter an amount to convert',
+    },
 ];
-async function main() {
-    const { fromCurrency, amount, toCurrency } = await inquirer.prompt([
-        {
-            message: 'Select the currency',
-            name: 'fromCurrency',
-            choices: CURRENCIES,
-            type: 'list',
-        },
-        {
-            message: 'Enter the amount',
-            name: 'amount',
-            type: 'input',
-            validate: (value) => {
-                if (isNaN(value) || value.length === 0) {
-                    return 'Please enter a number';
-                }
-                return true;
-            },
-        },
-        {
-            message: 'Select the currency you want to convert',
-            name: 'toCurrency',
-            choices: CURRENCIES,
-            type: 'list',
-        },
-    ]);
-    convertCurrency(fromCurrency, amount, toCurrency);
-}
-async function convertCurrency(fromCurrency, amount, toCurrency) {
-    let fromCurrencyCode = '';
-    let toCurrencyCode = '';
-    for (let i = 0; i < CURRENCIES.length; i++) {
-        if (CURRENCIES[i].name === fromCurrency)
-            fromCurrencyCode = CURRENCIES[i].code;
-        if (CURRENCIES[i].name === toCurrency)
-            toCurrencyCode = CURRENCIES[i].code;
+inquirer.prompt(questions).then((answers) => {
+    let convertee = answers.convertee;
+    let converted = answers.converted;
+    let amount = answers.amount;
+    let sum;
+    switch (convertee) {
+        case 'U.S Dollars':
+            switch (converted) {
+                case 'U.S Dollars':
+                    sum = amount * USDConvert[0];
+                    break;
+                case 'British Pounds':
+                    sum = amount * USDConvert[1];
+                    break;
+                case 'Pakistani Ruppees':
+                    sum = amount * USDConvert[2];
+                    break;
+                case 'Chinese Yuan':
+                    sum = amount * USDConvert[3];
+                    break;
+            }
+            break;
+        case 'British Pounds':
+            switch (converted) {
+                case 'U.S Dollars':
+                    sum = amount * PoundConvert[0];
+                    break;
+                case 'British Pounds':
+                    sum = amount * PoundConvert[1];
+                    break;
+                case 'Pakistani Ruppees':
+                    sum = amount * PoundConvert[2];
+                    break;
+                case 'Chinese Yuan':
+                    sum = amount * PoundConvert[3];
+                    break;
+            }
+            break;
+        case 'Pakistani Ruppees':
+            switch (converted) {
+                case 'U.S Dollars':
+                    sum = amount * PKRConvert[0];
+                    break;
+                case 'British Pounds':
+                    sum = amount * PKRConvert[1];
+                    break;
+                case 'Pakistani Ruppees':
+                    sum = amount * PKRConvert[2];
+                    break;
+                case 'Chinese Yuan':
+                    sum = amount * PKRConvert[3];
+                    break;
+            }
+        case 'Chinese Yuan':
+            switch (converted) {
+                case 'U.S Dollars':
+                    sum = amount * YUANConvert[0];
+                    break;
+                case 'British Pounds':
+                    sum = amount * YUANConvert[1];
+                    break;
+                case 'Pakistani Ruppees':
+                    sum = amount * YUANConvert[2];
+                    break;
+                case 'Chinese Yuan':
+                    sum = amount * YUANConvert[3];
+                    break;
+            }
+            break;
     }
-    try {
-        const apiResponse = await fetch(`${process.env.API_KEY}/${fromCurrencyCode}/${toCurrencyCode}`);
-        const data = await apiResponse.json();
-        const exChangeCurrency = (data.conversion_rate * amount).toFixed(2);
-        console.log(`${amount} ${fromCurrencyCode} = ${exChangeCurrency} ${toCurrencyCode}`);
-    }
-    catch (error) {
-        console.log(error);
-    }
-}
-main();
+    console.log(`The total amount after ${convertee} conversion to ${converted} is ${sum} ${converted}`);
+});
