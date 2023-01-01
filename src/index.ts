@@ -17,14 +17,14 @@ interface ApiType {
 }
 
 const CURRENCIES = [
-  { name: 'United States Doller (USD)', code: 'USD', rate: 1 },
-  { name: 'Pakistani Rupee (PKR)', code: 'PKR', rate: 226.56 },
-  { name: 'Indian Rupee (INR)', code: 'INR', rate: 82.74 },
-  { name: 'Great British Pound (GBP)', code: 'GBP', rate: 0.8285 },
-  { name: 'Japanese Yen (JPY)', code: 'JPY', rate: 131.56 },
-  { name: 'Chinese Yen (CNY)', code: 'CNY', rate: 6.9181 },
-  { name: 'Euro (EUR)', code: 'EUR', rate: 0.9358 },
-  { name: 'United Arab Emirates Dirham (AED)', code: 'AED', rate: 3.6725 },
+  { name: 'United States Doller (USD)', code: 'USD' },
+  { name: 'Pakistani Rupee (PKR)', code: 'PKR' },
+  { name: 'Indian Rupee (INR)', code: 'INR' },
+  { name: 'Great British Pound (GBP)', code: 'GBP' },
+  { name: 'Japanese Yen (JPY)', code: 'JPY' },
+  { name: 'Chinese Yen (CNY)', code: 'CNY' },
+  { name: 'Euro (EUR)', code: 'EUR' },
+  { name: 'United Arab Emirates Dirham (AED)', code: 'AED' },
 ];
 
 async function main() {
