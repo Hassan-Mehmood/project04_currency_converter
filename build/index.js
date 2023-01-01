@@ -27,70 +27,61 @@ inquirer.prompt(questions).then((answers) => {
     let converted = answers.converted;
     let amount = answers.amount;
     let sum;
-    switch (convertee) {
-        case 'U.S Dollars':
-            switch (converted) {
-                case 'U.S Dollars':
-                    sum = amount * USDConvert[0];
-                    break;
-                case 'British Pounds':
-                    sum = amount * USDConvert[1];
-                    break;
-                case 'Pakistani Ruppees':
-                    sum = amount * USDConvert[2];
-                    break;
-                case 'Chinese Yuan':
-                    sum = amount * USDConvert[3];
-                    break;
-            }
-            break;
-        case 'British Pounds':
-            switch (converted) {
-                case 'U.S Dollars':
-                    sum = amount * PoundConvert[0];
-                    break;
-                case 'British Pounds':
-                    sum = amount * PoundConvert[1];
-                    break;
-                case 'Pakistani Ruppees':
-                    sum = amount * PoundConvert[2];
-                    break;
-                case 'Chinese Yuan':
-                    sum = amount * PoundConvert[3];
-                    break;
-            }
-            break;
-        case 'Pakistani Ruppees':
-            switch (converted) {
-                case 'U.S Dollars':
-                    sum = amount * PKRConvert[0];
-                    break;
-                case 'British Pounds':
-                    sum = amount * PKRConvert[1];
-                    break;
-                case 'Pakistani Ruppees':
-                    sum = amount * PKRConvert[2];
-                    break;
-                case 'Chinese Yuan':
-                    sum = amount * PKRConvert[3];
-                    break;
-            }
-        case 'Chinese Yuan':
-            switch (converted) {
-                case 'U.S Dollars':
-                    sum = amount * YUANConvert[0];
-                    break;
-                case 'British Pounds':
-                    sum = amount * YUANConvert[1];
-                    break;
-                case 'Pakistani Ruppees':
-                    sum = amount * YUANConvert[2];
-                    break;
-                case 'Chinese Yuan':
-                    sum = amount * YUANConvert[3];
-                    break;
-            }
-            break;
+    if (convertee === 'U.S Dollars') {
+        if (converted === 'U.S Dollars') {
+            sum = amount * USDConvert[0];
+        }
+        else if (converted === 'British Pounds') {
+            sum = amount * USDConvert[1];
+        }
+        else if (converted === 'Pakistani Ruppees') {
+            sum = amount * USDConvert[2];
+        }
+        else if (converted === 'Chinese Yuan') {
+            sum = amount * USDConvert[3];
+        }
+    }
+    else if (convertee === 'British Pounds') {
+        if (converted === 'U.S Dollars') {
+            sum = amount * PoundConvert[0];
+        }
+        else if (converted === 'British Pounds') {
+            sum = amount * PoundConvert[1];
+        }
+        else if (converted === 'Pakistani Ruppees') {
+            sum = amount * PoundConvert[2];
+        }
+        else if (converted === 'Chinese Yuan') {
+            sum = amount * PoundConvert[3];
+        }
+    }
+    else if (convertee === 'Pakistani Ruppees') {
+        if (converted === 'U.S Dollars') {
+            sum = amount * PKRConvert[0];
+        }
+        else if (converted === 'British Pounds') {
+            sum = amount * PKRConvert[1];
+        }
+        else if (converted === 'Pakistani Ruppees') {
+            sum = amount * PKRConvert[2];
+        }
+        else if (converted === 'Chinese Yuan') {
+            sum = amount * PKRConvert[3];
+        }
+    }
+    else if (convertee === 'Chinese Yuan') {
+        if (converted === 'U.S Dollars') {
+            sum = amount * YUANConvert[0];
+        }
+        else if (converted === 'British Pounds') {
+            sum = amount * YUANConvert[1];
+        }
+        else if (converted === 'Pakistani Ruppees') {
+            sum = amount * YUANConvert[2];
+        }
+        else if (converted === 'Chinese Yuan') {
+            sum = amount * YUANConvert[3];
+        }
     }
     console.log(`The total amount after ${convertee} conversion to ${converted} is ${sum} ${converted}`);
 });
